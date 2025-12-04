@@ -20,10 +20,9 @@ app.use(express.urlencoded({extended:true}))
 app.use(cookieParser())
 app.use(
     expressSession({
-        resave:false,
-        saveUninitialized:false,
-        secret:process.env.EXPRESS_SESSION_SECRET,
-
+        resave: false,
+        saveUninitialized: false,
+        secret: "my_super_secret_key_123", 
     })
 )
 
@@ -41,5 +40,4 @@ app.use("/", timetableRouter);
 
 
 
-
-app.listen(3000)
+app.listen(process.env.PORT || 3000);
