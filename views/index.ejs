@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en" class="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Log In / Sign Up</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    
+</head>
+<body
+  style="background: radial-gradient(circle at top left, #1a002f, #2e004b, #000066, #000033, #0a001a);"
+  class="text-gray-100 transition-colors duration-300 min-h-screen flex flex-col"
+>
+
+
+
+    <div class="flex flex-col min-h-screen">
+        <header class=" text-zinc-700 dark:text-zinc-200 py-10 flex flex-col items-center justify-center relative">
+        
+        
+            <a href="/" class="flex flex-col items-center group no-underline text-current">
+                <h1 class="font-bold text-4xl mb-4 group-hover:text-green-800 dark:group-hover:text-green-100 transition-colors duration-200 text-zinc-200">CLGAssist</h1>
+                
+                <img src="/images/4f646cc23f7fa312f1d07ef3e7d0b9d3.webp" 
+                     alt="SeedSpark App Logo" 
+                     class="w-60 h-60 object-cover  text-green-700 shadow-lg rounded-full group-hover:scale-110 group-hover:rotate-6 group-hover:-translate-y-1 transition-all duration-300 ease-in-out">
+            </a>
+        </header>
+        <div class="flex-grow flex items-center justify-center p-6">
+            <div class="w-full max-w-4xl flex flex-col md:flex-row items-stretch justify-around gap-12 perspective-1000">
+               
+                <form action="/users/register" method="post" 
+                      class="bg-white/10 backdrop-blur-lg rounded-xl shadow-2xl p-8 flex-1 w-full md:w-auto transform transition-transform duration-500 hover:-translate-y-4 hover:rotate-1 hover:scale-105">
+                    <h1 class="mb-6 text-3xl font-bold text-green-300">Sign Up</h1>
+                    <input class="w-full text-gray-100 rounded-md mb-4 bg-white/20 p-3 outline-none border border-transparent focus:border-green-300 focus:ring-green-300 transition-colors" type="text" placeholder="Full Name" name="fullname"><br>
+                    <input class="w-full text-gray-100 rounded-md mb-4 bg-white/20 p-3 outline-none border border-transparent focus:border-green-300 focus:ring-green-300 transition-colors" type="email" placeholder="Email" name="email"><br>
+                    <input class="w-full text-gray-100 rounded-md mb-6 bg-white/20 p-3 outline-none border border-transparent focus:border-green-300 focus:ring-green-300 transition-colors" type="password" placeholder="Password" name="password"><br>
+                    <button type="submit" class="w-full bg-green-500 hover:bg-green-600 py-3 px-6 text-white rounded-md font-semibold cursor-pointer transition-colors">
+                        Create Account
+                    </button>
+                </form>
+        
+               
+                <form action="/users/login" method="post" 
+                      class="bg-white/10 backdrop-blur-lg rounded-xl shadow-2xl p-8 flex-1 w-full md:w-auto transform transition-transform duration-500 hover:-translate-y-4 hover:-rotate-1 hover:scale-105">
+                    <h2 class="mb-6 text-3xl font-bold text-blue-300">Log In</h2>
+                    <input class="w-full text-gray-100 rounded-md mb-4 bg-white/20 p-3 outline-none border border-transparent focus:border-blue-300 focus:ring-blue-300 transition-colors" type="email" placeholder="Email" name="email"><br>
+                    <input class="w-full text-gray-100 rounded-md mb-6 bg-white/20 p-3 outline-none border border-transparent focus:border-blue-300 focus:ring-blue-300 transition-colors" type="password" placeholder="Password" name="password"><br>
+                    <button type="submit" class="w-full bg-blue-500 hover:bg-blue-600 py-3 px-6 text-white rounded-md font-semibold cursor-pointer transition-colors">
+                        Login
+                    </button>
+                </form>
+            </div>
+        </div>
+        
+    </div>
+    
+    
+</body>
+</html>

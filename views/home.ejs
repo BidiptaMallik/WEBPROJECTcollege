@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Schedule Builder</title>
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+    html, body {
+      font-family: 'Inter', sans-serif;
+      height: 100%;
+    }
+    body {
+      background-color: #0F172A;
+    }
+    .sidebar {
+      background-color: #1E293B;
+    }
+    .main-content {
+      background-color: #0F172A;
+    }
+    .card {
+      background-color: #1E293B;
+    }
+    .form-input {
+      background-color: #334155;
+      border: 1px solid #475569;
+      border-radius: 0.5rem;
+      padding: 0.75rem 1rem;
+      color: white;
+      width: 100%;
+    }
+    .form-input::placeholder {
+      color: #94A3B8;
+    }
+    .form-input:focus {
+      outline: none;
+      border-color: #3B82F6;
+      box-shadow: 0 0 0 2px #3B82F6;
+    }
+    .btn-primary {
+      background-color: #3B82F6;
+      color: white;
+      font-weight: 600;
+      padding: 0.75rem 1rem;
+      border-radius: 0.5rem;
+      width: 100%;
+      transition: background-color 0.2s;
+    }
+    .btn-primary:hover {
+      background-color: #2563EB;
+    }
+    .btn-danger {
+      background-color: #DC2626;
+      color: white;
+      font-size: 0.75rem;
+      padding: 0.25rem 0.5rem;
+      border-radius: 0.25rem;
+    }
+  </style>
+</head>
+
+<body class="text-gray-200">
+  <div class="flex h-screen">
+   
+    <aside class="sidebar w-20 lg:w-64 p-4 lg:p-6 flex flex-col items-center lg:items-start">
+      <h1 class="text-2xl font-bold text-white mb-10 hidden lg:block">
+        CollegeAssist
+      </h1>
+      <nav class="space-y-4 w-full">
+        <a href="#" class="flex items-center justify-center lg:justify-start p-3 rounded-lg text-blue-400 bg-blue-900/50 border border-blue-700">
+          <i data-lucide="calendar-days" class="w-6 h-6"></i>
+          <span class="text-sm font-medium ml-4 hidden lg:block">Schedule</span>
+        </a>
+        <a href="#" class="flex items-center justify-center lg:justify-start p-3 rounded-lg text-gray-400 hover:bg-gray-700">
+          <i data-lucide="award" class="w-6 h-6"></i>
+          <span class="text-sm font-medium ml-4 hidden lg:block">Grades</span>
+        </a>
+        <a href="#" class="flex items-center justify-center lg:justify-start p-3 rounded-lg text-gray-400 hover:bg-gray-700">
+          <i data-lucide="user" class="w-6 h-6"></i>
+          <span class="text-sm font-medium ml-4 hidden lg:block">Profile</span>
+        </a>
+      </nav>
+    </aside>
+
+
+    <main class="main-content flex-1 p-6 lg:p-10 overflow-y-auto">
+      <header class="flex justify-between items-center mb-8">
+        <h1 class="text-3xl font-bold text-white">
+          Plan Schedule
+        </h1>
+        <div class="bg-green-300 text-green-900 font-semibold px-4 py-2 rounded-full text-sm">
+          Schedule Builder
+        </div>
+      </header>
+
+    
+      <div class="mb-8">
+        <div class="card rounded-2xl p-3">
+          <div id="day-picker-container" class="flex space-x-2"></div>
+        </div>
+      </div>
+
+      <div>
+        <h2 class="text-2xl font-bold mb-1">Time Sheet</h2>
+
+        <div class="flex justify-between items-center text-sm mb-8">
+          <a href="#" class="flex items-center text-yellow-400">
+            <i data-lucide="info" class="w-4 h-4 mr-2"></i> More Info
+          </a>
+          <a href="#" class="flex items-center text-red-500">
+            <i data-lucide="flag" class="w-4 h-4 mr-2"></i> Report Error
+          </a>
+        </div>
+
+        <div id="schedule-list-container" class="space-y-4">
+          <div id="nothing-found" class="flex flex-col items-center text-center text-gray-500 pt-16">
+            <i data-lucide="calendar-off" class="w-20 h-20 mb-6"></i>
+            <p class="text-lg">Nothing found, must be an off day :)</p>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <aside class="sidebar w-80 p-6 hidden xl:block">
+      <h2 class="text-xl font-bold text-white mb-6">Add New Subject</h2>
+
+      <form id="add-subject-form" class="space-y-4">
+        <div>
+          <label for="subject-name" class="block text-sm font-medium text-gray-300 mb-2">Subject Name</label>
+          <input type="text" id="subject-name" class="form-input" required />
+        </div>
+
+        <div>
+          <label for="faculty-name" class="block text-sm font-medium text-gray-300 mb-2">Faculty Name</label>
+          <input type="text" id="faculty-name" class="form-input" required />
+        </div>
+
+        <div>
+          <label for="room-number" class="block text-sm font-medium text-gray-300 mb-2">Room Number</label>
+          <input type="text" id="room-number" class="form-input" />
+        </div>
+
+        <div class="flex space-x-2">
+          <div class="flex-1">
+            <label for="start-time" class="block text-sm font-medium text-gray-300 mb-2">Start Time</label>
+            <input type="time" id="start-time" class="form-input" required />
+          </div>
+          <div class="flex-1">
+            <label for="end-time" class="block text-sm font-medium text-gray-300 mb-2">End Time</label>
+            <input type="time" id="end-time" class="form-input" required />
+          </div>
+        </div>
+
+        <div>
+          <label for="course-name" class="block text-sm font-medium text-gray-300 mb-2">Course / Branch</label>
+          <input type="text" id="course-name" class="form-input" required />
+        </div>
+
+        <div>
+          <label for="section-details" class="block text-sm font-medium text-gray-300 mb-2">Section / Semester</label>
+          <input type="text" id="section-details" class="form-input" required />
+        </div>
+
+        <button type="submit" class="btn-primary">Add to Schedule</button>
+      </form>
+    </aside>
+  </div>
+
+  <script>
+    lucide.createIcons();
+  
+    
+    const timetableData = <%- JSON.stringify(scheduleData || {}) %>;
+    console.log("Schedule data loaded:", timetableData);
+  
+    const days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+    let currentDay = 'Mon';
+  
+    const dayPickerContainer = document.getElementById('day-picker-container');
+    const scheduleListContainer = document.getElementById('schedule-list-container');
+    const nothingFoundMessage = document.getElementById('nothing-found');
+    const addSubjectForm = document.getElementById('add-subject-form');
+  
+    function renderSchedule() {
+      scheduleListContainer.innerHTML = '';
+      const scheduleItems = timetableData[currentDay];
+  
+      if (!scheduleItems || scheduleItems.length === 0) {
+        scheduleListContainer.appendChild(nothingFoundMessage);
+        nothingFoundMessage.style.display = 'flex';
+      } else {
+        nothingFoundMessage.style.display = 'none';
+        scheduleItems.sort((a, b) => a.start.localeCompare(b.start));
+  
+        scheduleItems.forEach(item => {
+          const card = document.createElement('div');
+          card.className = 'card p-4 rounded-lg flex items-center justify-between animate-fade-in';
+          card.innerHTML = `
+            <div class="flex items-center">
+              <div class="pr-4 mr-4 border-r border-gray-600">
+                <p class="text-sm font-semibold whitespace-nowrap">${item.start}</p>
+                <p class="text-xs text-gray-400 whitespace-nowrap">${item.end}</p>
+              </div>
+              <div class="pl-4">
+                <h3 class="font-bold text-lg">${item.subject}</h3>
+                <p class="text-sm text-gray-300">${item.faculty}</p>
+                <p class="text-xs text-gray-400 mt-1">Room: ${item.room}</p>
+              </div>
+            </div>
+            <button class="btn-danger" data-id="${item.id}">Delete</button>
+          `;
+          card.querySelector('.btn-danger').addEventListener('click', () => deleteSubject(item.id));
+          scheduleListContainer.appendChild(card);
+        });
+      }
+    }
+  
+    function renderDayPicker() {
+      dayPickerContainer.innerHTML = '';
+      days.forEach((day, index) => {
+        const button = document.createElement('button');
+        button.className = `flex-1 flex flex-col items-center p-3 rounded-lg ${currentDay === day ? 'bg-blue-600 text-white' : 'bg-gray-700 text-gray-300 hover:bg-gray-600'}`;
+        button.innerHTML = `<span class="text-xs font-medium">${day}</span><span class="text-lg font-bold mt-1">${index + 1}</span>`;
+        button.addEventListener('click', () => {
+          currentDay = day;
+          renderDayPicker();
+          renderSchedule();
+        });
+        dayPickerContainer.appendChild(button);
+      });
+    }
+  
+    async function handleAddSubject(e) {
+      e.preventDefault();
+      const subject = document.getElementById('subject-name').value;
+      const faculty = document.getElementById('faculty-name').value;
+      const room = document.getElementById('room-number').value;
+      const start = document.getElementById('start-time').value;
+      const end = document.getElementById('end-time').value;
+      const course = document.getElementById('course-name').value;
+      const section = document.getElementById('section-details').value;
+  
+      try {
+        const res = await fetch('/api/schedule/add', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ day: currentDay, subject, faculty, room, start, end, course, section })
+        });
+  
+        const data = await res.json();
+        if (res.ok) {
+          timetableData[currentDay].push(data);
+          renderSchedule();
+          addSubjectForm.reset();
+        } else {
+          alert(data.error || 'Failed to save item');
+        }
+      } catch (err) {
+        console.error('Error:', err);
+        alert('Server error.');
+      }
+    }
+  
+    async function deleteSubject(id) {
+      try {
+        const res = await fetch(`/api/schedule/delete/${id}`, { method: 'DELETE' });
+        if (res.ok) {
+          timetableData[currentDay] = timetableData[currentDay].filter(item => item.id !== id);
+          renderSchedule();
+        } else {
+          const data = await res.json();
+          alert(data.error || 'Failed to delete.');
+        }
+      } catch (err) {
+        console.error('Error:', err);
+        alert('Server error.');
+      }
+    }
+  
+    addSubjectForm.addEventListener('submit', handleAddSubject);
+    renderDayPicker();
+    renderSchedule();
+  </script>
+  
+</body>
+</html>
