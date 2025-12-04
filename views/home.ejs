@@ -55,13 +55,6 @@
     .btn-primary:hover {
       background-color: #2563EB;
     }
-    .btn-danger {
-      background-color: #DC2626;
-      color: white;
-      font-size: 0.75rem;
-      padding: 0.25rem 0.5rem;
-      border-radius: 0.25rem;
-    }
     
     .custom-scroll::-webkit-scrollbar {
       width: 6px;
@@ -96,21 +89,9 @@
       <a href="#" class="flex items-center justify-center lg:justify-start p-3 rounded-lg text-blue-400 bg-blue-900/50 border border-blue-700/50 group relative">
         <i data-lucide="calendar-days" class="w-6 h-6 flex-shrink-0"></i>
         <span class="text-sm font-medium ml-4 hidden lg:block">Schedule</span>
-        <div class="lg:hidden absolute left-14 bg-gray-900 text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap z-50 pointer-events-none">
-          Schedule
-        </div>
-      </a>
-      <a href="#" class="flex items-center justify-center lg:justify-start p-3 rounded-lg text-gray-400 hover:bg-gray-700 hover:text-white transition-colors group relative">
-        <i data-lucide="award" class="w-6 h-6 flex-shrink-0"></i>
-        <span class="text-sm font-medium ml-4 hidden lg:block">Grades</span>
-      </a>
-      <a href="#" class="flex items-center justify-center lg:justify-start p-3 rounded-lg text-gray-400 hover:bg-gray-700 hover:text-white transition-colors group relative">
-        <i data-lucide="user" class="w-6 h-6 flex-shrink-0"></i>
-        <span class="text-sm font-medium ml-4 hidden lg:block">Profile</span>
       </a>
     </nav>
   </aside>
-
 
   <main class="main-content flex-1 flex flex-col relative min-w-0">
     <header class="h-16 flex items-center justify-between px-4 lg:px-8 border-b border-gray-800 bg-[#0F172A] flex-shrink-0">
@@ -125,7 +106,7 @@
         </button>
 
         <div class="hidden sm:block bg-green-500/10 text-green-400 font-semibold px-3 py-1 rounded-full text-xs border border-green-500/20">
-          Builder Active
+          Sync Active
         </div>
       </div>
     </header>
@@ -142,25 +123,21 @@
       <div class="pb-20"> 
         <div class="flex justify-between items-center text-sm mb-4">
           <h2 class="text-xl font-bold text-white">Time Sheet</h2>
-          <div class="flex space-x-4">
-             <button class="text-gray-400 hover:text-white"><i data-lucide="filter" class="w-4 h-4"></i></button>
-          </div>
         </div>
 
         <div id="schedule-list-container" class="space-y-3">
-          <div id="nothing-found" class="hidden flex-col items-center text-center text-gray-500 py-12">
+        </div>
+
+        <div id="nothing-found" class="hidden flex-col items-center text-center text-gray-500 py-12">
             <div class="bg-gray-800/50 p-4 rounded-full mb-4">
               <i data-lucide="calendar-off" class="w-8 h-8 text-gray-400"></i>
             </div>
             <p class="text-base font-medium text-gray-400">No classes today</p>
-            <p class="text-sm text-gray-600">Enjoy your free time!</p>
-          </div>
         </div>
       </div>
     </div>
   </main>
 
-  
   <aside id="right-sidebar" class="fixed inset-y-0 right-0 w-full sm:w-96 bg-[#1E293B] z-50 transform translate-x-full transition-transform duration-300 xl:translate-x-0 xl:static xl:block xl:w-80 border-l border-gray-800 shadow-2xl xl:shadow-none flex flex-col h-full">
     
     <div class="p-6 pb-2 flex justify-between items-center xl:hidden">
@@ -225,19 +202,12 @@
   <script>
     lucide.createIcons();
 
-    
     let timetableData = {};
     try {
-        
         timetableData = <%- JSON.stringify(scheduleData || {}) %>;
     } catch (e) {
-        console.log("Running in standalone mode or EJS data missing. Initializing empty.");
-        timetableData = {
-            'Mon': [
-                { id: 1, start: '09:00', end: '10:00', subject: 'Maths', faculty: 'Dr. Jones', room: '101' },
-                { id: 2, start: '10:15', end: '11:15', subject: 'Physics', faculty: 'Prof. X', room: 'Lab 2' }
-            ]
-        };
+        console.error("Failed to load schedule data", e);
+        timetableData = {};
     }
 
     const days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
@@ -247,12 +217,9 @@
     const scheduleListContainer = document.getElementById('schedule-list-container');
     const nothingFoundMessage = document.getElementById('nothing-found');
     const addSubjectForm = document.getElementById('add-subject-form');
-    
     const rightSidebar = document.getElementById('right-sidebar');
     const sidebarOverlay = document.getElementById('sidebar-overlay');
-    const mobileAddBtn = document.getElementById('mobile-add-btn');
-    const closeSidebarBtn = document.getElementById('close-sidebar-btn');
-
+    
     function openSidebar() {
         rightSidebar.classList.remove('translate-x-full');
         sidebarOverlay.classList.remove('hidden');
@@ -265,8 +232,8 @@
         setTimeout(() => sidebarOverlay.classList.add('hidden'), 300);
     }
 
-    mobileAddBtn.addEventListener('click', openSidebar);
-    closeSidebarBtn.addEventListener('click', closeSidebar);
+    document.getElementById('mobile-add-btn').addEventListener('click', openSidebar);
+    document.getElementById('close-sidebar-btn').addEventListener('click', closeSidebar);
     sidebarOverlay.addEventListener('click', closeSidebar);
 
 
@@ -275,7 +242,6 @@
       const scheduleItems = timetableData[currentDay] || [];
 
       if (scheduleItems.length === 0) {
-        scheduleListContainer.appendChild(nothingFoundMessage);
         nothingFoundMessage.style.display = 'flex';
       } else {
         nothingFoundMessage.style.display = 'none';
@@ -283,19 +249,16 @@
 
         scheduleItems.forEach(item => {
           const card = document.createElement('div');
-         
-          card.className = 'card p-4 rounded-xl flex items-start justify-between border border-gray-700/50 hover:border-blue-500/30 transition-colors group';
+          const itemId = item.id || item._id;
           
+          card.className = 'card p-4 rounded-xl flex items-start justify-between border border-gray-700/50 hover:border-blue-500/30 transition-colors group';
           card.innerHTML = `
             <div class="flex items-start gap-4 flex-1 min-w-0">
-              <!-- Time Column -->
               <div class="flex flex-col items-center justify-center min-w-[3.5rem] pt-1">
                 <span class="text-sm font-bold text-white">${formatTime(item.start)}</span>
                 <div class="w-px h-2 bg-gray-600 my-1"></div>
                 <span class="text-xs text-gray-400">${formatTime(item.end)}</span>
               </div>
-              
-              <!-- Content -->
               <div class="flex-1 min-w-0 border-l border-gray-700 pl-4">
                 <h3 class="font-bold text-base text-white truncate pr-2">${item.subject}</h3>
                 <div class="flex flex-wrap gap-x-3 gap-y-1 mt-1">
@@ -308,16 +271,14 @@
                 </div>
               </div>
             </div>
-
-            <!-- Delete Button -->
-            <button class="delete-btn ml-2 p-2 text-gray-500 hover:text-red-500 hover:bg-red-500/10 rounded-lg transition-colors" data-id="${item.id}" aria-label="Delete">
+            <button class="delete-btn ml-2 p-2 text-gray-500 hover:text-red-500 hover:bg-red-500/10 rounded-lg transition-colors" data-id="${itemId}">
                <i data-lucide="trash-2" class="w-4 h-4"></i>
             </button>
           `;
           
           card.querySelector('.delete-btn').addEventListener('click', (e) => {
              e.stopPropagation();
-             deleteSubject(item.id);
+             deleteSubject(itemId);
           });
           
           scheduleListContainer.appendChild(card);
@@ -354,11 +315,10 @@
       });
     }
 
-
     async function handleAddSubject(e) {
       e.preventDefault();
       
-      const newItem = {
+      const payload = {
         day: currentDay,
         subject: document.getElementById('subject-name').value,
         faculty: document.getElementById('faculty-name').value,
@@ -367,12 +327,18 @@
         end: document.getElementById('end-time').value,
         course: document.getElementById('course-name').value,
         section: document.getElementById('section-details').value,
-        id: Date.now().toString() 
       };
 
       try {
+        const res = await fetch('/api/schedule/add', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+
+        if (!res.ok) throw new Error('Failed to save to database');
         
-        const savedItem = newItem; 
+        const savedItem = await res.json(); 
 
         if (!timetableData[currentDay]) timetableData[currentDay] = [];
         timetableData[currentDay].push(savedItem);
@@ -386,7 +352,7 @@
 
       } catch (err) {
         console.error('Error:', err);
-        alert('Failed to add subject: ' + err.message);
+        alert('Error saving schedule: ' + err.message);
       }
     }
 
@@ -394,10 +360,13 @@
       if(!confirm("Are you sure you want to remove this class?")) return;
 
       try {
-       
-        timetableData[currentDay] = timetableData[currentDay].filter(item => item.id != id);
+        const res = await fetch(`/api/schedule/delete/${id}`, { method: 'DELETE' });
         
+        if (!res.ok) throw new Error('Failed to delete from database');
+
+        timetableData[currentDay] = timetableData[currentDay].filter(item => (item.id !== id && item._id !== id));
         renderSchedule();
+
       } catch (err) {
         console.error('Error:', err);
         alert('Server error while deleting.');
