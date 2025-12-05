@@ -154,7 +154,6 @@
   <script>
     lucide.createIcons();
 
-    // 1. Static Course Data
     const availableCourses = [
       { 
         id: 'cs101', 
@@ -308,9 +307,7 @@
       }
     ];
 
-    // 2. Load Selected Courses from Backend (Safe Mode)
-    // We wrap the EJS tag in quotes so it doesn't break the preview
-    // If we are in preview mode (EJS not processed), JSON.parse fails and we fall back to []
+    
     let selectedCourses = [];
     try {
         const rawData = '<%- (typeof savedCourses !== "undefined") ? JSON.stringify(savedCourses) : "[]" %>';
@@ -445,7 +442,6 @@
       renderSelection();
     };
 
-    // --- Backend Integration ---
     async function confirmRegistration() {
       if(selectedCourses.length === 0) return alert("Please select at least one course.");
       
