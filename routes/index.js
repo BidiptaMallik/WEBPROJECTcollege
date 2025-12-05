@@ -3,6 +3,7 @@ const router = express.Router();
 const isLoggedIn = require("../middlewares/isLoggedIn");
 const { getScheduleBuilder } = require("../controllers/timetable");
 const routineController = require("../controllers/routine");
+const courseController=require("../controllers/course")
 
 router.get("/home", isLoggedIn, getScheduleBuilder);
 
@@ -45,5 +46,9 @@ router.get("/timetable", isLoggedIn, function (req, res) {
 router.get("/myaccount", isLoggedIn, (req, res) => {
   res.render("myaccount", { user: req.user });
 });
+
+router.get("/course", isLoggedIn, courseController.getCoursePage);
+
+router.post("/course/register", isLoggedIn, courseController.registerCourses);
 
 module.exports = router;
