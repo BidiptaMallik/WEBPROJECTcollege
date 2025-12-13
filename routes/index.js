@@ -17,8 +17,10 @@ router.get("/schedule-builder", isLoggedIn, function (req, res) {
 });
 
 router.get("/", function (req, res) {
-  let error = req.flash("error");
-  res.render("index", { error });
+
+  const error=req.query.error||null;
+  res.render("index",{error});
+  
 });
 
 router.get("/logout", isLoggedIn, function (req, res) {

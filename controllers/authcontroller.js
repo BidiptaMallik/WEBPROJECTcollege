@@ -11,7 +11,7 @@ module.exports.registerUser = async function (req, res) {
             return res.redirect("/?error=fields");
 
         if (!email.endsWith("@gmail.com")) {
-            return res.send("Enter valid email");
+            return res.redirect("/?error=invalidEmail");
         }
 
         let userExists = await userModel.findOne({ email });
@@ -47,7 +47,7 @@ module.exports.loginUser = async function (req, res) {
             return res.redirect("/?error=fields");
 
         if (!email.endsWith("@gmail.com")) {
-            return res.send("Enter valid email");
+            return res.redirect("/?error=invalidEmail");
         }
 
         let user = await userModel.findOne({ email });
